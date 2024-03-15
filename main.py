@@ -26,10 +26,11 @@ if "app_key" in st.session_state:
         genai.configure(api_key=st.session_state.app_key)
         model = genai.GenerativeModel("gemini-pro")
         chat = model.start_chat(history=st.session_state.history)
-    except AttributeError as e:
-        st.warning("Please enter your Gemini API Key first")
-else:
-    st.warning("API Key is required to start the chat.")
+    except Exception as e:
+        if "API_KEY_INVALID" in str(e):
+            st.error("Invalid API Key. Please check and enter a valid API Key.")
+        else:
+            st.exception("An unexpected error occurred: " + str(e))
 
 # st.sidebar.image("assets/Contained_Mark_Blue.png", use_column_width=True)
 
