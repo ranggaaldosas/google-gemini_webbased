@@ -8,9 +8,7 @@ st.set_page_config(
     page_icon="🔥"
 )
 
-st.title("Gemini Chatbot!")
-st.caption("A Chatbot Powered by Google Gemini Pro")
-
+st.title("Gemini Chatbot! 💬")
 
 if "app_key" not in st.session_state:
     app_key = st.text_input("Please enter your Gemini API Key", type='password', on_change=None, args=None, kwargs=None, help=None, autocomplete=None)
@@ -33,10 +31,24 @@ if "app_key" in st.session_state:
 else:
     st.warning("API Key is required to start the chat.")
 
+# st.sidebar.image("assets/Contained_Mark_Blue.png", use_column_width=True)
+
 with st.sidebar:
-    if st.button("Clear Chat Window", use_container_width=True):
-        st.session_state.history = []
-        st.experimental_rerun()
+    if st.button("Change API Key", key="change_api_key", use_container_width=True):
+        st.session_state.pop("app_key", None)
+        st.session_state.pop("success_message", None)
+        st.session_state.pop("toast_message", None)
+
+    "[Get an Google Cloud API key](https://console.cloud.google.com/apis/credential)"
+
+
+if "success_message" in st.session_state:
+    st.success(st.session_state.success_message, icon="✅")
+    st.session_state.pop("success_message", None)
+
+if "toast_message" in st.session_state:
+    st.toast(st.session_state.toast_message, icon='😍')
+    st.session_state.pop("toast_message", None)
 
 if chat is not None:
     for message in chat.history:
